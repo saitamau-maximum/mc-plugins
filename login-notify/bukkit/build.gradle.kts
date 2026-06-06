@@ -22,5 +22,10 @@ tasks.processResources {
 tasks.jar {
     archiveFileName.set("MaximumLoginNotify.jar")
     dependsOn(":login-notify:core:classes")
-    from(project(":login-notify:core").sourceSets.main.get().output)
+    from(
+        project(":login-notify:core")
+            .sourceSets.main
+            .get()
+            .output,
+    )
 }

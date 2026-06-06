@@ -25,8 +25,10 @@ mise run setup
 ## 動作確認
 
 ```bash
-mise run test      # 全 subproject のテスト
-mise run build     # 全 subproject の JAR ビルド
+mise run check     # spotlessCheck + test（CI と同じゲート）
+mise run fix       # spotlessApply（コミット前）
+mise run test      # テストのみ
+mise run build     # JAR ビルド
 ```
 
 単体プラグインだけ触る場合:
@@ -67,7 +69,7 @@ PlayerConnectionListener          LoginNotificationService
 
 | hook | 内容 |
 | --- | --- |
-| pre-commit | gitleaks（ステージ済みファイル）、変更された Java/kts の compile + testClasses |
+| pre-commit | gitleaks、spotlessCheck（format 検証）、変更された Java/kts の compile + testClasses |
 | commit-msg | [Conventional Commits](https://www.conventionalcommits.org/) 形式 |
 
 コミットメッセージ例:
@@ -83,9 +85,25 @@ fix(login-notify): handle empty webhook URL
 
 Homebrew 等で Java 25 が PATH 優先されていると Gradle が失敗することがある。その場合は mise の Java 21 を有効にするか、競合する JDK を PATH から外す。
 
+## Format / 静的解析
+
+**Spotless のみ**（google-java-format + ktlint for `.gradle.kts`）。Checkstyle / Error Prone 等の別 linter は未導入。
+
+| コマンド | 内容 |
+| --- | --- |
+| `mise run check` | format 検証 + テスト |
+| `mise run fix` | format 自動修正 |
+| `mise run test` | テストのみ |
+
 ## CI との対応
 
-ローカルでは `mise run test`、GitHub Actions では `./gradlew test --no-daemon` を実行。どちらも同じ Gradle タスク。
+| ローカル | CI |
+| --- | --- |
+| `mise run check` | `spotlessCheck` + `test` |
+| `mise run build` | `jar` |
+| `mise run fix` | （ローカルのみ）`spotlessApply` |
+
+GitHub Actions では gitleaks も実行する。
 
 ## Git / `.gitignore`
 

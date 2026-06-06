@@ -11,46 +11,47 @@ import vc.maximum.mc.loginnotify.core.LoginNotificationService;
 
 final class PlayerConnectionListener implements Listener {
 
-    private final JavaPlugin plugin;
-    private final LoginNotificationService notificationService;
-    private final String serverName;
-    private final boolean notifyJoin;
-    private final boolean notifyQuit;
+  private final JavaPlugin plugin;
+  private final LoginNotificationService notificationService;
+  private final String serverName;
+  private final boolean notifyJoin;
+  private final boolean notifyQuit;
 
-    PlayerConnectionListener(
-            JavaPlugin plugin,
-            LoginNotificationService notificationService,
-            String serverName,
-            boolean notifyJoin,
-            boolean notifyQuit) {
-        this.plugin = plugin;
-        this.notificationService = notificationService;
-        this.serverName = serverName;
-        this.notifyJoin = notifyJoin;
-        this.notifyQuit = notifyQuit;
+  PlayerConnectionListener(
+      JavaPlugin plugin,
+      LoginNotificationService notificationService,
+      String serverName,
+      boolean notifyJoin,
+      boolean notifyQuit) {
+    this.plugin = plugin;
+    this.notificationService = notificationService;
+    this.serverName = serverName;
+    this.notifyJoin = notifyJoin;
+    this.notifyQuit = notifyQuit;
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR)
+  public void onPlayerJoin(PlayerJoinEvent event) {
+    if (!notifyJoin) {
+      return;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!notifyJoin) {
-            return;
-        }
+    dispatchAsync(BukkitConnectionEventFactory.fromJoin(serverName, event.getPlayer()));
+  }
 
-        dispatchAsync(BukkitConnectionEventFactory.fromJoin(serverName, event.getPlayer()));
+  @EventHandler(priority = EventPriority.MONITOR)
+  public void onPlayerQuit(PlayerQuitEvent event) {
+    if (!notifyQuit) {
+      return;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        if (!notifyQuit) {
-            return;
-        }
+    dispatchAsync(BukkitConnectionEventFactory.fromQuit(serverName, event.getPlayer()));
+  }
 
-        dispatchAsync(BukkitConnectionEventFactory.fromQuit(serverName, event.getPlayer()));
-    }
-
-    private void dispatchAsync(ConnectionEvent connectionEvent) {
-        plugin.getServer()
-                .getScheduler()
-                .runTaskAsynchronously(plugin, () -> notificationService.notify(connectionEvent));
-    }
+  private void dispatchAsync(ConnectionEvent connectionEvent) {
+    plugin
+        .getServer()
+        .getScheduler()
+        .runTaskAsynchronously(plugin, () -> notificationService.notify(connectionEvent));
+  }
 }

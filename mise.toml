@@ -11,9 +11,13 @@ run = "./gradlew test --no-daemon"
 description = "全プラグインの JAR をビルド"
 run = "./gradlew jar --no-daemon"
 
-[tasks.lint]
-description = "CI ゲート（テストで検証）"
-run = "./gradlew test --no-daemon"
+[tasks.check]
+description = "CI ゲート: format 検証 (spotlessCheck) + テスト"
+run = "./gradlew spotlessCheck test --no-daemon"
+
+[tasks.fix]
+description = "format 自動修正 (spotlessApply)"
+run = "./gradlew spotlessApply --no-daemon"
 
 [tasks."build:login-notify"]
 description = "login-notify プラグインのみビルド"

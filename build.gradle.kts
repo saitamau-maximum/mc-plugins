@@ -1,3 +1,25 @@
+plugins {
+    id("com.diffplug.spotless") version "7.0.2"
+}
+
+repositories {
+    mavenCentral()
+}
+
+spotless {
+    java {
+        target("login-notify/**/src/*/java/**/*.java")
+        googleJavaFormat("1.25.2")
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    kotlinGradle {
+        target("*.gradle.kts", "login-notify/**/*.gradle.kts")
+        ktlint()
+    }
+}
+
 subprojects {
     group = "vc.maximum.mc"
     version = "0.0.1"
