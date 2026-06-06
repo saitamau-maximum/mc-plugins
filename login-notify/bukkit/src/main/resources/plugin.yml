@@ -1,0 +1,6 @@
+name: MaximumLoginNotify
+version: '${version}'
+main: vc.maximum.mc.loginnotify.bukkit.MaximumLoginNotifyPlugin
+api-version: '1.21'
+description: Sends player join/quit notifications via pluggable adapters
+author: MAXIMUM

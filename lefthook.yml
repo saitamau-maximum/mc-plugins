@@ -1,0 +1,16 @@
+pre-commit:
+  parallel: true
+  commands:
+    secrets:
+      run: gitleaks protect --staged --no-banner
+    java-compile:
+      glob: "**/*.{java,kts}"
+      run: ./gradlew classes testClasses --no-daemon -q
+
+commit-msg:
+  commands:
+    conventional:
+      run: |
+        msg=$(cat {1})
+        echo "$msg" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\(.+\))?!?: .+' \
+          || { echo "Conventional Commits 形式: type(scope): subject"; exit 1; }

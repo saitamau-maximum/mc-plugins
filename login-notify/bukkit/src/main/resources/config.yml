@@ -1,0 +1,17 @@
+server-name: mc.maximum.vc
+
+notify-join: true
+notify-quit: false
+
+notifier:
+  type: discord
+
+include-uuid: true
+include-ip: true
+include-online-count: true
+
+discord:
+  webhook-url: ""
+  embed:
+    join-color: 5763719
+    quit-color: 15548997
