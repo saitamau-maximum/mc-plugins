@@ -4,7 +4,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface LoginNotifier {
 
-    String id();
+  String id();
 
-    CompletableFuture<Void> notify(ConnectionEvent event);
+  CompletableFuture<Void> notify(ConnectionEvent event);
 }
