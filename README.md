@@ -6,7 +6,8 @@ Paper / Bukkit 向けプラグインの Gradle モノレポ。
 
 ```bash
 mise run setup   # 初回: ツール + git hooks
-mise run test    # テスト
+mise run check   # spotlessCheck + test
+mise run fix     # spotlessApply
 mise run build   # JAR ビルド
 ```
 

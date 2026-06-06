@@ -3,6 +3,9 @@ pre-commit:
   commands:
     secrets:
       run: gitleaks protect --staged --no-banner
+    format-check:
+      glob: "**/*.{java,kts}"
+      run: ./gradlew spotlessCheck --no-daemon -q
     java-compile:
       glob: "**/*.{java,kts}"
       run: ./gradlew classes testClasses --no-daemon -q
