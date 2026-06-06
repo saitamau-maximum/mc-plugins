@@ -1,0 +1,24 @@
+[tools]
+java = "21.0.2"
+lefthook = "2.1.6"
+gitleaks = "8.24.2"
+
+[tasks.test]
+description = "全プラグインのテスト"
+run = "./gradlew test --no-daemon"
+
+[tasks.build]
+description = "全プラグインの JAR をビルド"
+run = "./gradlew jar --no-daemon"
+
+[tasks.lint]
+description = "CI ゲート（テストで検証）"
+run = "./gradlew test --no-daemon"
+
+[tasks."build:login-notify"]
+description = "login-notify プラグインのみビルド"
+run = "./gradlew :login-notify:bukkit:jar --no-daemon"
+
+[tasks.setup]
+description = "ツールチェーンと git hooks をセットアップ"
+run = ["mise install", "lefthook install"]

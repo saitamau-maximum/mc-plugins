@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags: ["*-v*.*.*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3.6.3
+
+      - name: Parse tag
+        id: tag
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          plugin="${tag%-v*}"
+          version="${tag#${plugin}-v}"
+          echo "plugin=$plugin" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build JAR
+        run: ./gradlew ":${{ steps.tag.outputs.plugin }}:bukkit:jar" --no-daemon
+
+      - name: Upload GitHub Release
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+        with:
+          name: "${{ steps.tag.outputs.plugin }} v${{ steps.tag.outputs.version }}"
+          files: |
+            ${{ steps.tag.outputs.plugin }}/bukkit/build/libs/*.jar
+          generate_release_notes: true

@@ -1,0 +1,26 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Env
+.env
+.env.local
+
+# Gradle / Java
+# gradle/wrapper/ と gradlew* はコミットする（ignore しない）
+.gradle/
+build/
+**/bin/
+**/out/
+.classpath
+.project
+.settings/
+
+# mise (lock は commit する)
+# mise.lock を ignore しない
