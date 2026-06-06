@@ -21,6 +21,6 @@ public final class LoginNotifyConfigMapper {
     }
 
     public static String serverName(FileConfiguration config) {
-        return config.getString("server-name", "mc.maximum.vc");
+        return config.getString("server-name", "");
     }
 }

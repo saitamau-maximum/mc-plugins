@@ -1,6 +1,6 @@
 # mc-plugins
 
-MAXIMUM Minecraft サーバー（Paper, `mc.maximum.vc`）向けプラグインのモノレポ。
+Paper / Bukkit 向けプラグインの Gradle モノレポ。
 
 ## クイックスタート
 
@@ -24,8 +24,5 @@ mise run build   # JAR ビルド
 | --- | --- |
 | 開発手順 | [docs/how-to/local-dev.md](./docs/how-to/local-dev.md) |
 | リリース | [docs/how-to/release.md](./docs/how-to/release.md) |
-| 本番反映 | [docs/how-to/production-deploy.md](./docs/how-to/production-deploy.md) |
-| 設計判断 (ADR) | [docs/adr/](./docs/adr/)（[モジュール分離](./docs/adr/0004-core-platform-adapter-split.md) 等） |
+| 設計判断 (ADR) | [docs/adr/](./docs/adr/) |
 | 索引 | [docs/README.md](./docs/README.md) |
-
-本番デプロイの Ansible 実装は [server-ansible](https://github.com/saitamau-maximum/server-ansible)。handoff は [production-deploy.md](./docs/how-to/production-deploy.md)。

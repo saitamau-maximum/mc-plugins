@@ -15,13 +15,13 @@ class DiscordEmbedPayloadBuilderTest {
     void buildJoinPayloadIncludesPlayerServerAndColor() {
         String payload = builder.build(TestConnectionEvents.joinEvent("Steve"));
 
-        assertTrue(payload.contains("\"title\": \"🟢 Steve joined mc.maximum.vc\""));
-        assertTrue(payload.contains("Steve が mc.maximum.vc に参加しました"));
+        assertTrue(payload.contains("\"title\": \"🟢 Steve joined Test Server\""));
+        assertTrue(payload.contains("Steve が Test Server に参加しました"));
         assertTrue(payload.contains("\"color\": 5763719"));
         assertTrue(payload.contains(TestConnectionEvents.PLAYER_UUID.toString()));
         assertTrue(payload.contains("203.0.113.1"));
         assertTrue(payload.contains("\"name\": \"Online\", \"value\": \"3\", \"inline\": true"));
-        assertTrue(payload.contains("\"footer\": {\"text\": \"mc.maximum.vc\"}"));
+        assertTrue(payload.contains("\"footer\": {\"text\": \"Test Server\"}"));
         assertTrue(payload.contains("\"timestamp\": \"2026-06-06T10:15:30Z\""));
     }
 
@@ -29,8 +29,8 @@ class DiscordEmbedPayloadBuilderTest {
     void buildQuitPayloadUsesQuitColor() {
         String payload = builder.build(TestConnectionEvents.quitEvent("Alex"));
 
-        assertTrue(payload.contains("\"title\": \"🔴 Alex left mc.maximum.vc\""));
-        assertTrue(payload.contains("Alex が mc.maximum.vc から退出しました"));
+        assertTrue(payload.contains("\"title\": \"🔴 Alex left Test Server\""));
+        assertTrue(payload.contains("Alex が Test Server から退出しました"));
         assertTrue(payload.contains("\"color\": 15548997"));
         assertTrue(payload.contains("\"name\": \"Online\", \"value\": \"2\", \"inline\": true"));
     }

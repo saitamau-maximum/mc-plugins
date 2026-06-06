@@ -31,7 +31,7 @@ PlayerConnectionListener (bukkit)
 - `config.yml` の `notifier.type` で実装を選択（`LoginNotifierFactory`）
 - 通知処理は `CompletableFuture<Void>` で非同期。サーバーのメインスレッドをブロックしない
 - Discord 固有の embed 組み立ては `DiscordEmbedPayloadBuilder` に閉じ込める
-- webhook URL 等の secret は repo に含めず、server-ansible が vault から本番 config に注入する
+- webhook URL 等の secret は repo に含めず、サーバー上の `config.yml` で設定する
 
 ## Consequences
 
