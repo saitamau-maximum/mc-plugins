@@ -7,6 +7,7 @@ public final class TestConnectionEvents {
 
     public static final UUID PLAYER_UUID = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
     public static final Instant OCCURRED_AT = Instant.parse("2026-06-06T10:15:30Z");
+    public static final String SERVER_NAME = "Test Server";
 
     private TestConnectionEvents() {}
 
@@ -25,7 +26,7 @@ public final class TestConnectionEvents {
                 PLAYER_UUID,
                 "203.0.113.1",
                 onlineCount,
-                "mc.maximum.vc",
+                SERVER_NAME,
                 OCCURRED_AT);
     }
 }

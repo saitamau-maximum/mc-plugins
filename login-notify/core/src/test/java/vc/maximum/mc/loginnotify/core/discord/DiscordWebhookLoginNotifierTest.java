@@ -51,7 +51,7 @@ class DiscordWebhookLoginNotifierTest {
         notifier.notify(TestConnectionEvents.joinEvent("Steve")).get();
 
         String body = receivedBody.get();
-        assertTrue(body.contains("Steve joined mc.maximum.vc"));
+        assertTrue(body.contains("Steve joined Test Server"));
         assertEquals("discord", notifier.id());
     }
 }

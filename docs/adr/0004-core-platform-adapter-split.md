@@ -54,7 +54,7 @@ include("login-notify:core", "login-notify:bukkit")
 
 ### プラグイン API について
 
-本番は Paper だが、**bukkit 層のコードは Bukkit API のみ**（Paper 固有 API は必要になるまで入れない）。`paper-api` は Maven 座標の都合。
+対象サーバーは Paper だが、**bukkit 層のコードは Bukkit API のみ**（Paper 固有 API は必要になるまで入れない）。`paper-api` は Maven 座標の都合。
 
 ## Consequences
 
