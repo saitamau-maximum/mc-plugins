@@ -4,15 +4,26 @@ on:
   push:
     tags: ["*-v*.*.*"]
 
-permissions:
-  contents: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag points to main HEAD
+        run: |
+          git fetch origin main
+          main_head="$(git rev-parse origin/main)"
+          if [ "${GITHUB_SHA}" != "${main_head}" ]; then
+            echo "::error::Release tag must point to origin/main HEAD (${main_head}), got ${GITHUB_SHA}. Merge to main, pull, then tag the latest commit."
+            exit 1
+          fi
+
       - uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3.6.3
 
       - name: Parse tag
