@@ -1,0 +1,6 @@
+name: MaximumMetricsExporter-Paper
+version: '${version}'
+main: vc.maximum.mc.metricsexporter.paper.MaximumMetricsExporterPaperPlugin
+api-version: '1.21'
+description: Exposes Minecraft server metrics for Prometheus scraping (Paper required)
+author: MAXIMUM

@@ -9,18 +9,19 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":login-notify:core"))
+    implementation(project(":metrics-exporter:bukkit"))
 
     val paperVersion: String by rootProject
     compileOnly("io.papermc.paper:paper-api:$paperVersion")
 }
 
 mcRelease {
-    pluginId.set("login-notify")
+    pluginId.set("metrics-exporter")
 }
 
 mcPluginShadow {
-    archiveFileName = "MaximumLoginNotify.jar"
+    archiveFileName = "MaximumMetricsExporter-Paper.jar"
+    relocation("io.prometheus", "vc.maximum.mc.metricsexporter.lib.prometheus")
 }
 
 tasks.processResources {

@@ -21,7 +21,11 @@ run = "./gradlew spotlessApply --no-daemon"
 
 [tasks."build:login-notify"]
 description = "login-notify プラグインのみビルド"
-run = "./gradlew :login-notify:bukkit:jar --no-daemon"
+run = "./gradlew stageReleaseArtifacts -PreleasePlugin=login-notify --no-daemon"
+
+[tasks."build:metrics-exporter"]
+description = "metrics-exporter プラグイン（Paper 配布 JAR）をビルド"
+run = "./gradlew stageReleaseArtifacts -PreleasePlugin=metrics-exporter --no-daemon"
 
 [tasks.setup]
 description = "ツールチェーンと git hooks をセットアップ"

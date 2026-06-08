@@ -53,10 +53,12 @@ git push origin login-notify-v1.0.0
 `.github/workflows/release.yml` が tag push をトリガーに:
 
 1. タグから plugin 名と version を parse
-2. `./gradlew :{plugin}:bukkit:jar` でビルド
-3. `{plugin}/bukkit/build/libs/*.jar` を Release asset として upload
+2. `./gradlew stageReleaseArtifacts -PreleasePlugin={plugin}` でビルド（`mcRelease` 宣言済み subproject の JAR をすべて）
+3. `build/release/{plugin}/*.jar` を Release asset として upload
 
-Release ページに `MaximumLoginNotify.jar`（等）が添付されていることを確認。
+1 タグ = 1 プラグイン版。Paper / Folia など複数 runtime がある場合は **同一タグに複数 JAR** が添付される（[ADR 0006](../adr/0006-release-artifact-declaration.md) 案 A）。各 distributable subproject の `build.gradle.kts` に `mcRelease { pluginId.set("...") }` を宣言する。runtime 名は subproject ディレクトリ名（`bukkit`, `paper` 等）がデフォルト。
+
+Release ページに `MaximumLoginNotify.jar` または `MaximumMetricsExporter-Paper.jar` が添付されていることを確認。
 
 ### asset URL
 

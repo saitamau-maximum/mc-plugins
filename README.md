@@ -15,9 +15,13 @@ mise run build   # JAR ビルド
 
 | ディレクトリ | Paper 名 | 説明 |
 | --- | --- | --- |
-| `login-notify/` | MaximumLoginNotify | 第 1 プラグイン（`core/` + `bukkit/`） |
+| `login-notify/` | MaximumLoginNotify | プレイヤー参加/退出通知（`core/` + `bukkit/`） |
 | `login-notify/core/` | — | pure Java コア（Bukkit 非依存） |
 | `login-notify/bukkit/` | MaximumLoginNotify | Bukkit adapter + 配布 JAR（core 同梱） |
+| `metrics-exporter/` | MaximumMetricsExporter-Paper | Prometheus メトリクス exporter（`core/` + `bukkit/` + `paper/`） |
+| `metrics-exporter/core/` | — | MetricsRegistry / Settings 等（Bukkit 非依存） |
+| `metrics-exporter/bukkit/` | — | Bukkit API の collector / listener（配布 JAR なし） |
+| `metrics-exporter/paper/` | MaximumMetricsExporter-Paper | Paper adapter + 配布 JAR（core + bukkit + Prometheus 同梱） |
 
 ## ドキュメント
 
