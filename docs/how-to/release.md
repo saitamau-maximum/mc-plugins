@@ -20,7 +20,11 @@ mise run test
 
 PR 経由で main に merge 済みであること。CI が green であることを確認。
 
+**feature branch から tag を push しない。** Release workflow は tag の commit が `origin/main` 上にあることを検証する。main 未 merge の tag は Release されない。
+
 ## 2. タグを付けて push
+
+**必ず `main` の最新 commit に tag を付ける。**
 
 **形式:** `{plugin-dir}-v{semver}`
 
@@ -72,6 +76,7 @@ secret は repo に含めない。`config.yml` はサーバー側で設定する
 
 | 症状 | 確認 |
 | --- | --- |
+| Release workflow が `Release tag must point to a commit on origin/main` で失敗 | tag を feature branch から push していないか。`git checkout main && git pull` 後に tag を付け直す |
 | Release workflow が動かない | tag が `*-v*.*.*` 形式か（例: `login-notify-v1.0.0`） |
 | Gradle project not found | tag の prefix が `settings.gradle.kts` の `include(...)` と一致するか |
 | Release に JAR がない | workflow ログと asset 名 |
