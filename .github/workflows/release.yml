@@ -4,9 +4,6 @@ on:
   push:
     tags: ["*-v*.*.*"]
 
-permissions:
-  contents: read
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -23,8 +20,7 @@ jobs:
           git fetch origin main
           main_head="$(git rev-parse origin/main)"
           if [ "${GITHUB_SHA}" != "${main_head}" ]; then
-            echo "::error::Release tag must point to the current origin/main HEAD (${main_head})."
-            echo "::error::Got ${GITHUB_SHA}. Merge to main, pull main, then tag the latest commit."
+            echo "::error::Release tag must point to origin/main HEAD (${main_head}), got ${GITHUB_SHA}. Merge to main, pull, then tag the latest commit."
             exit 1
           fi
 
