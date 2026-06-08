@@ -48,9 +48,10 @@ include("login-notify:core", "login-notify:bukkit")
 1. **core に `org.bukkit.*` / `io.papermc.*` を import しない**
 2. 設定は core 側で **`LoginNotifySettings` 等の record** に正規化。YAML 読み取りは bukkit の `LoginNotifyConfigMapper` のみ
 3. **`paper-api` は `:login-notify:bukkit` のみ** `compileOnly`
-4. 配布 JAR（`MaximumLoginNotify.jar`）は `:login-notify:bukkit:jar` が core の classes を同梱
+4. 配布 JAR（`MaximumLoginNotify.jar`）は `:login-notify:bukkit:shadowJar` が **`vc.maximum.mc.shadow-jar`** convention で core を同梱
 5. **テストは core に集約**（Bukkit なしで実行可能）
-6. git tag / Release workflow の plugin 名は **ディレクトリ名**（`login-notify-v1.0.0` → `./gradlew :login-notify:bukkit:jar`）
+
+Release 配布 subproject の特定・GitHub Actions でのビルド方法は [ADR 0006](./0006-release-artifact-declaration.md) に従う（0004 時点では `:plugin:bukkit:jar` を想定していたが、0006 で置き換え）。
 
 ### プラグイン API について
 
@@ -68,8 +69,7 @@ include("login-notify:core", "login-notify:bukkit")
 ### Negative
 
 - 1 プラグインあたり Gradle subproject が 2 つになり、初見の複雑さが増える
-- JAR 同梱設定が必要（Shadow 未使用の明示的 `from(core.output)`）
-- Release workflow は `:plugin:bukkit:jar` / `plugin/bukkit/build/libs/` を参照
+- JAR 同梱は **`vc.maximum.mc.shadow-jar`** convention（Gradle Shadow + 必要時 relocate）に集約
 
 ### Follow-up
 

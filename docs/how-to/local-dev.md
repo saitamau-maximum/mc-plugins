@@ -35,7 +35,7 @@ mise run build     # JAR ビルド
 
 ```bash
 ./gradlew :login-notify:core:test     # コア（Bukkit なし）
-./gradlew :login-notify:bukkit:jar    # 配布 JAR
+./gradlew stageReleaseArtifacts -PreleasePlugin=login-notify    # 配布 JAR
 # または
 mise run build:login-notify
 ```
@@ -63,7 +63,7 @@ PlayerConnectionListener          LoginNotificationService
 
 **core に `org.bukkit.*` を import しない** — 境界違反は compile 前に気づけるよう、Gradle モジュールで分離している。
 
-ビルド成果物: `login-notify/bukkit/build/libs/MaximumLoginNotify.jar`（core classes 同梱）
+ビルド成果物: `mise run build:login-notify` または `./gradlew stageReleaseArtifacts -PreleasePlugin=login-notify`（配布 JAR は Shadow で core 同梱）
 
 ## Git hooks
 
