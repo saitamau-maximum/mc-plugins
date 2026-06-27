@@ -7,7 +7,10 @@ import io.prometheus.client.exporter.common.TextFormat;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public final class MetricsRegistry {
 
@@ -29,6 +32,11 @@ public final class MetricsRegistry {
   private final Counter playerQuits;
   private final Counter playerKicks;
   private final Counter playerDeaths;
+
+  // Label sets currently present on the world-scoped gauges, so updateSnapshot can drop
+  // only the series for worlds that disappeared instead of clearing every series.
+  private final Set<List<String>> entitiesLabels = new HashSet<>();
+  private final Set<List<String>> loadedChunksLabels = new HashSet<>();
 
   MetricsRegistry(MetricsSettings settings, CollectorRegistry registry, Instant startedAt) {
     this.serverName = settings.serverName();
@@ -127,9 +135,7 @@ public final class MetricsRegistry {
             .register(registry);
   }
 
-  // Serialized with scrape() so an HTTP scrape never observes the world-scoped
-  // gauges mid-update: the clear() + repopulate below is not atomic on its own.
-  public synchronized void updateSnapshot(MetricsSnapshot snapshot) {
+  public void updateSnapshot(MetricsSnapshot snapshot) {
     playersOnline.labels(serverName).set(snapshot.playersOnline());
     playersMax.labels(serverName).set(snapshot.playersMax());
     worldsTotal.labels(serverName).set(snapshot.worldsTotal());
@@ -141,14 +147,36 @@ public final class MetricsRegistry {
       tps.labels(serverName, sample.window()).set(sample.value());
     }
 
-    entities.clear();
-    loadedChunks.clear();
+    // Diff update rather than clear() + repopulate: the HTTP scrape reads the
+    // CollectorRegistry directly on another thread, so wiping every series first would
+    // let a scrape observe empty/partial world stats. Update each series in place and
+    // only drop the label series for worlds that are no longer loaded.
+    Set<List<String>> nextEntities = new HashSet<>();
+    Set<List<String>> nextLoadedChunks = new HashSet<>();
     for (MetricsSnapshot.WorldStats worldStats : snapshot.worldStats()) {
       entities
           .labels(serverName, worldStats.world(), worldStats.environment())
           .set(worldStats.entities());
       loadedChunks.labels(serverName, worldStats.world()).set(worldStats.loadedChunks());
+      nextEntities.add(List.of(serverName, worldStats.world(), worldStats.environment()));
+      nextLoadedChunks.add(List.of(serverName, worldStats.world()));
     }
+
+    removeStaleSeries(entities, entitiesLabels, nextEntities);
+    removeStaleSeries(loadedChunks, loadedChunksLabels, nextLoadedChunks);
+  }
+
+  private static void removeStaleSeries(
+      Gauge gauge, Set<List<String>> tracked, Set<List<String>> current) {
+    tracked.removeIf(
+        labels -> {
+          boolean stale = !current.contains(labels);
+          if (stale) {
+            gauge.remove(labels.toArray(new String[0]));
+          }
+          return stale;
+        });
+    tracked.addAll(current);
   }
 
   public void recordJoin() {
@@ -167,7 +195,7 @@ public final class MetricsRegistry {
     playerDeaths.labels(serverName, sanitizeWorldLabel(world)).inc();
   }
 
-  public synchronized String scrape() throws IOException {
+  public String scrape() throws IOException {
     StringWriter writer = new StringWriter();
     TextFormat.write004(writer, registry.metricFamilySamples());
     return writer.toString();
