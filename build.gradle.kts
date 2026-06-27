@@ -114,13 +114,14 @@ gradle.projectsEvaluated {
 
 subprojects {
     group = "vc.maximum.mc"
-    version = "0.0.1"
+    // Release workflow injects the tag version via -PreleaseVersion so plugin.yml matches the tag.
+    version = (findProperty("releaseVersion") as String?)?.takeIf { it.isNotBlank() } ?: "0.0.1"
 
     repositories {
         mavenCentral()
     }
 
-    plugins.withId("java") {
+    fun Project.configureJavaToolchain() {
         the<JavaPluginExtension>().toolchain {
             languageVersion.set(JavaLanguageVersion.of(21))
         }
@@ -135,18 +136,6 @@ subprojects {
         }
     }
 
-    plugins.withId("java-library") {
-        the<JavaPluginExtension>().toolchain {
-            languageVersion.set(JavaLanguageVersion.of(21))
-        }
-
-        tasks.withType<JavaCompile> {
-            options.encoding = "UTF-8"
-            options.release.set(21)
-        }
-
-        tasks.withType<Test> {
-            useJUnitPlatform()
-        }
-    }
+    plugins.withId("java") { configureJavaToolchain() }
+    plugins.withId("java-library") { configureJavaToolchain() }
 }

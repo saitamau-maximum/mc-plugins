@@ -38,7 +38,8 @@ jobs:
       - name: Build and stage release JARs
         run: |
           plugin="${{ steps.tag.outputs.plugin }}"
-          ./gradlew stageReleaseArtifacts "-PreleasePlugin=${plugin}" --no-daemon
+          version="${{ steps.tag.outputs.version }}"
+          ./gradlew stageReleaseArtifacts "-PreleasePlugin=${plugin}" "-PreleaseVersion=${version}" --no-daemon
 
       - name: Upload GitHub Release
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
