@@ -27,7 +27,7 @@ final class PlayerActivityListener implements Listener {
     metricsRegistry.recordQuit();
   }
 
-  @EventHandler(priority = EventPriority.MONITOR)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onPlayerKick(PlayerKickEvent event) {
     metricsRegistry.recordKick(event.getReason());
   }
