@@ -35,13 +35,15 @@ jobs:
           echo "plugin=$plugin" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Build JAR
-        run: ./gradlew ":${{ steps.tag.outputs.plugin }}:bukkit:jar" --no-daemon
+      - name: Build and stage release JARs
+        run: |
+          plugin="${{ steps.tag.outputs.plugin }}"
+          version="${{ steps.tag.outputs.version }}"
+          ./gradlew stageReleaseArtifacts "-PreleasePlugin=${plugin}" "-PreleaseVersion=${version}" --no-daemon
 
       - name: Upload GitHub Release
         uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b # v3.0.1
         with:
           name: "${{ steps.tag.outputs.plugin }} v${{ steps.tag.outputs.version }}"
-          files: |
-            ${{ steps.tag.outputs.plugin }}/bukkit/build/libs/*.jar
+          files: build/release/${{ steps.tag.outputs.plugin }}/*.jar
           generate_release_notes: true

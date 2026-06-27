@@ -20,3 +20,5 @@
 | [0002](./adr/0002-login-notifier-adapter-pattern.md) | 外部通知の LoginNotifier アダプタパターン | Accepted |
 | [0003](./adr/0003-no-untrusted-external-plugins.md) | 本リポジトリは自前開発プラグインのみを扱う | Accepted |
 | [0004](./adr/0004-core-platform-adapter-split.md) | core と platform adapter のモジュール分離 | Accepted |
+| [0005](./adr/0005-metrics-exporter-plugin.md) | Minecraft メトリクス exporter プラグイン | Accepted |
+| [0006](./adr/0006-release-artifact-declaration.md) | Release 配布物の宣言（mcRelease） | Accepted |

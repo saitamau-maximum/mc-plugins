@@ -4,4 +4,10 @@ plugins {
 
 rootProject.name = "mc-plugins"
 
-include("login-notify:core", "login-notify:bukkit")
+include(
+    "login-notify:core",
+    "login-notify:bukkit",
+    "metrics-exporter:core",
+    "metrics-exporter:bukkit",
+    "metrics-exporter:paper",
+)
