@@ -30,10 +30,6 @@ public final class MetricsRegistry {
   private final Counter playerKicks;
   private final Counter playerDeaths;
 
-  public MetricsRegistry(MetricsSettings settings) {
-    this(settings, CollectorRegistry.defaultRegistry, Instant.now());
-  }
-
   MetricsRegistry(MetricsSettings settings, CollectorRegistry registry, Instant startedAt) {
     this.serverName = settings.serverName();
     this.registry = registry;
@@ -131,7 +127,9 @@ public final class MetricsRegistry {
             .register(registry);
   }
 
-  public void updateSnapshot(MetricsSnapshot snapshot) {
+  // Serialized with scrape() so an HTTP scrape never observes the world-scoped
+  // gauges mid-update: the clear() + repopulate below is not atomic on its own.
+  public synchronized void updateSnapshot(MetricsSnapshot snapshot) {
     playersOnline.labels(serverName).set(snapshot.playersOnline());
     playersMax.labels(serverName).set(snapshot.playersMax());
     worldsTotal.labels(serverName).set(snapshot.worldsTotal());
@@ -169,7 +167,7 @@ public final class MetricsRegistry {
     playerDeaths.labels(serverName, sanitizeWorldLabel(world)).inc();
   }
 
-  public String scrape() throws IOException {
+  public synchronized String scrape() throws IOException {
     StringWriter writer = new StringWriter();
     TextFormat.write004(writer, registry.metricFamilySamples());
     return writer.toString();
