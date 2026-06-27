@@ -2,6 +2,7 @@ package vc.maximum.mc.metricsexporter.bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
@@ -16,7 +17,7 @@ public final class BukkitServerMetricsCollector implements ServerMetricsCollecto
       worldStats.add(
           new MetricsSnapshot.WorldStats(
               world.getName(),
-              world.getEnvironment().name().toLowerCase(),
+              world.getEnvironment().name().toLowerCase(Locale.ROOT),
               world.getEntities().size(),
               world.getLoadedChunks().length));
     }

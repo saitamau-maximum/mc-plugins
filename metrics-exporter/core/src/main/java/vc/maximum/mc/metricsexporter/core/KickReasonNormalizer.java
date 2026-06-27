@@ -1,5 +1,7 @@
 package vc.maximum.mc.metricsexporter.core;
 
+import java.util.Locale;
+
 public final class KickReasonNormalizer {
 
   private KickReasonNormalizer() {}
@@ -9,7 +11,7 @@ public final class KickReasonNormalizer {
       return "other";
     }
 
-    String normalized = reason.toLowerCase();
+    String normalized = reason.toLowerCase(Locale.ROOT);
 
     if (normalized.contains("ban")) {
       return "banned";
