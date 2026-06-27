@@ -34,13 +34,10 @@ public final class MetricsExporterSupport {
 
     long intervalTicks = Math.max(1L, settings.scrapeIntervalSeconds() * 20L);
     MetricsPollingTask pollingTask = new MetricsPollingTask(plugin, registry, collector);
+    // Collect on the main thread: Bukkit world/entity/chunk APIs are not thread-safe.
+    // The 0-tick initial delay records the first snapshot on the next tick.
     support.pollingTask =
-        plugin
-            .getServer()
-            .getScheduler()
-            .runTaskTimerAsynchronously(plugin, pollingTask, 0L, intervalTicks);
-
-    pollingTask.run();
+        plugin.getServer().getScheduler().runTaskTimer(plugin, pollingTask, 0L, intervalTicks);
 
     plugin
         .getLogger()

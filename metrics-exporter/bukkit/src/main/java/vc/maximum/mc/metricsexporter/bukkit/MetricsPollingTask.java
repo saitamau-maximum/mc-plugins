@@ -18,10 +18,6 @@ final class MetricsPollingTask implements Runnable {
 
   @Override
   public void run() {
-    plugin
-        .getServer()
-        .getScheduler()
-        .runTask(
-            plugin, () -> metricsRegistry.updateSnapshot(collector.collect(plugin.getServer())));
+    metricsRegistry.updateSnapshot(collector.collect(plugin.getServer()));
   }
 }
