@@ -15,12 +15,9 @@ public final class MaximumMetricsExporterPaperPlugin extends JavaPlugin {
 
     String serverName = MetricsConfigMapper.serverName(getConfig());
     if (serverName.isBlank()) {
-      serverName = getServer().getName();
-    }
-    if (serverName.isBlank()) {
       getLogger()
           .severe(
-              "server-name is not configured in config.yml and server.properties has no server-name.");
+              "server-name is not set in config.yml; set a unique value and re-enable the plugin.");
       getServer().getPluginManager().disablePlugin(this);
       return;
     }

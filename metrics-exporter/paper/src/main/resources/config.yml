@@ -1,6 +1,10 @@
+# Unique identifier for this server, exported as the `server` label on every metric.
+# Required: the plugin disables itself if left blank.
 server-name: ""
 
 http:
+  # Bind address for the /metrics endpoint. 0.0.0.0 exposes it on all interfaces with no
+  # authentication; restrict it with a firewall or bind a private address on public hosts.
   host: "0.0.0.0"
   port: 9225
 
