@@ -3,7 +3,7 @@ import org.gradle.kotlin.dsl.register
 import vc.maximum.mc.gradle.McReleaseExtension
 
 plugins {
-    id("com.diffplug.spotless") version "8.6.0"
+    id("com.diffplug.spotless") version "8.10.0"
 }
 
 repositories {
